@@ -1,0 +1,662 @@
+openapi: 3.0.1
+info:
+  title: Clocker
+  description: This is the API spec for the Clocker scheduling app.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+tags:
+- name: authentication
+  description: Everything about login and registration
+- name: organisation
+  description: Everything about your organisation
+- name: department
+  description: Everything about your department
+- name: employee
+  description: Everything about your employees
+- name: schedule
+  description: Everything about your schedules
+paths:
+  /authentication/register:
+    post:
+      tags:
+      - authentication
+      operationId: register
+      parameters:
+      - name: username
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      - name: email
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      - name: salt
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      - name: verifier
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      responses:
+        200:
+          description: successful registration
+  /authentication/challenge:
+    post:
+      tags:
+      - authentication
+      operationId: challenge
+      parameters:
+      - name: email
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      responses:
+        200:
+          description: salt and B
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  salt:
+                    type: string
+                  B:
+                    type: string
+  /authentication/authenticate:
+    post:
+      tags:
+      - authentication
+      operationId: authenticate
+      parameters:
+      - name: A
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      - name: M1
+        schema:
+          type: 'string'
+        required: true
+        in: header
+      responses:
+        200:
+          description: Succesfully authenticated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/securitySchemes/bearerAuth'
+  /organisation:
+    get:
+      tags:
+      - organisation
+      summary: Returns a list of all organisations
+      security:
+      - bearerAuth: []
+      operationId: getOrganisations
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organisation'
+    post:
+      tags:
+      - organisation
+      security:
+      - bearerAuth: []
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Organisation'
+
+        400:
+          description: bad request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /organisation/{organisationId}:
+    get:
+      tags:
+      - organisation
+      summary: Returns an organisation based on it's Id.
+      operationId: getOrganisationById
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+               $ref: '#/components/schemas/Organisation'
+    put:
+      tags:
+      - organisation
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to edit
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: Organisation
+        in: header
+        required: true
+        schema:
+          $ref: '#/components/schemas/Organisation'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+               $ref: '#/components/schemas/Organisation'
+        400:
+          description: bad request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - organisation
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Organisation'
+  /organisation/{organisationId}/department:
+    get:
+      tags:
+      - department
+      summary: Returns a list of all department
+      operationId: getDepartment
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+    post:
+      tags:
+      - department
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Department'
+  /organisation/{organisationId}/department/{departmentId}:
+    get:
+      tags:
+      - department
+      summary: Returns an department based on it's Id.
+      operationId: getDepartmentById
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        description: Id of department to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Department'
+    put:
+      tags:
+      - department
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        description: Id of department to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Department'
+    delete:
+      tags:
+      - department
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        description: Id of department to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Department'
+  /organisation/{organisationId}/department/{departmentId}/employee:
+    get:
+      tags:
+      - employee
+      summary: Returns a list of all employees
+      operationId: getEmployees
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        description: Id of department to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      tags:
+      - employee
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        description: Id of department to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+  /organisation/{organisationId}/department/{departmentId}/employee/{employeeId}:
+    get:
+      tags:
+      - employee
+      summary: Returns an employee based on it's Id.
+      operationId: getEmployeeById
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: employeeId
+        in: path
+        description: Id of employee to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+    put:
+      tags:
+      - employee
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: employeeId
+        in: path
+        description: Id of employee to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+    delete:
+      tags:
+      - employee
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: organisationId
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: employeeId
+        in: path
+        description: Id of employee to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+  /organisation/{organisationId}/department/{departmentId}/schedule:
+    get:
+      tags:
+      - schedule
+      summary: Returns a list of all schedules
+      operationId: "getSchedules"
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: "organisationId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+    post:
+      tags:
+      - schedule
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: "organisationId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /organisation/{organisationId}/department/{departmentId}/schedule/{scheduleId}:
+    get:
+      tags:
+      - schedule
+      summary: Returns an schedule based on it's id.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: "organisationId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      operationId: getScheduleById
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+    put:
+      tags:
+      - schedule
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: "organisationId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+    delete:
+      tags:
+      - schedule
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: "organisationId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+components:
+  schemas:
+    Id:
+      type: integer
+      format: int64
+    ErrorMessage:
+      type: string
+    Organisation:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          type: string
+    Department:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          type: string
+        manager:
+          $ref: '#/components/schemas/Employee'
+    Employee:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        displayName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        hours:
+          type: object
+          properties: {}
+        isManager:
+          type: boolean
+          default: false
+    Schedule:
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
