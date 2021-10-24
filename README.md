@@ -42,30 +42,25 @@ These are the deliverables for this project:
 
 - front-end pwa
   - employer panel
-  - badge systeem
-  - ticket system (wie werkt aan wat)
-  - planning system (wie werkt wanneer)
+  - badge system
+  - planning system
   - settings page
   - login page
   - no internet connection page
 - front-end windows
   - employer panel
-  - badge systeem
-  - ticket system (wie werkt aan wat)
-  - planning system (wie werkt wanneer)
+  - badge system
+  - planning system
   - settings page
   - login page
 - back-end
-  - badge systeem back
-  - ticket systeem backend
-  - planningssysteem backend
-  - employer panel backend
-  - socket log (notify iedereen als iemand inbadged ofzo)??
+  - badge system
+  - planning system
+  - employer panel
   - SRP
 - database
-  - badge systeem
-  - ticket systeem
-  - planningssysteem
+  - badge system
+  - planning systeem
   - employee/employer systeem
 - AI
   - Data API
