@@ -9,8 +9,6 @@ info:
 tags:
 - name: authentication
   description: Everything about login and registration
-- name: organisation
-  description: Everything about your organisation
 - name: department
   description: Everything about your department
 - name: employee
@@ -93,114 +91,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/securitySchemes/bearerAuth'
-  /organisation:
-    get:
-      tags:
-      - organisation
-      summary: Returns a list of all organisations
-      security:
-      - bearerAuth: []
-      operationId: getOrganisations
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Organisation'
-    post:
-      tags:
-      - organisation
-      security:
-      - bearerAuth: []
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Organisation'
-
-        400:
-          description: bad request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /organisation/{organisationId}:
-    get:
-      tags:
-      - organisation
-      summary: Returns an organisation based on it's Id.
-      operationId: getOrganisationById
-      security:
-      - bearerAuth: []
-      parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-               $ref: '#/components/schemas/Organisation'
-    put:
-      tags:
-      - organisation
-      security:
-      - bearerAuth: []
-      parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to edit
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-      - name: Organisation
-        in: header
-        required: true
-        schema:
-          $ref: '#/components/schemas/Organisation'
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-               $ref: '#/components/schemas/Organisation'
-        400:
-          description: bad request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - organisation
-      security:
-      - bearerAuth: []
-      parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-      responses:
-        200:
-          description: successful operation
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Organisation'
-  /organisation/{organisationId}/department:
+  /department:
     get:
       tags:
       - department
@@ -208,12 +99,6 @@ paths:
       operationId: getDepartment
       security:
       - bearerAuth: []
-      parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       responses:
         200:
           description: successful operation
@@ -228,12 +113,12 @@ paths:
       - department
       security:
       - bearerAuth: []
-      parameters:
-      - name: organisationId
-        in: path
+      requestBody:
         required: true
-        schema:
-          $ref: '#/components/schemas/Id'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Department'
       responses:
         200:
           description: successful operation
@@ -241,7 +126,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Department'
-  /organisation/{organisationId}/department/{departmentId}:
+  /department/{departmentId}:
     get:
       tags:
       - department
@@ -250,11 +135,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         description: Id of department to return
@@ -274,17 +154,18 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         description: Id of department to return
         required: true
         schema:
           $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Department'
       responses:
         200:
           description: successful operation
@@ -298,11 +179,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         description: Id of department to return
@@ -316,7 +192,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Department'
-  /organisation/{organisationId}/department/{departmentId}/employee:
+  /department/{departmentId}/employee:
     get:
       tags:
       - employee
@@ -325,12 +201,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         description: Id of department to return
@@ -352,18 +222,18 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         description: Id of department to return
         required: true
         schema:
           $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Employee'
       responses:
         200:
           description: successful operation
@@ -371,7 +241,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Employee'
-  /organisation/{organisationId}/department/{departmentId}/employee/{employeeId}:
+  /department/{departmentId}/employee/{employeeId}:
     get:
       tags:
       - employee
@@ -380,12 +250,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -410,12 +274,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -427,6 +285,12 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Employee'
       responses:
         200:
           description: successful operation
@@ -440,12 +304,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: organisationId
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -464,7 +322,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Employee'
-  /organisation/{organisationId}/department/{departmentId}/schedule:
+  /department/{departmentId}/schedule:
     get:
       tags:
       - schedule
@@ -473,12 +331,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: "organisationId"
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -499,17 +351,17 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: "organisationId"
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
         schema:
           $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Schedule'
       responses:
         200:
           description: successful operation
@@ -517,7 +369,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Schedule'
-  /organisation/{organisationId}/department/{departmentId}/schedule/{scheduleId}:
+  /department/{departmentId}/schedule/{scheduleId}:
     get:
       tags:
       - schedule
@@ -525,12 +377,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: "organisationId"
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -556,12 +402,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: "organisationId"
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -573,6 +413,12 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Schedule'
       responses:
         200:
           description: successful operation
@@ -586,12 +432,6 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: "organisationId"
-        in: path
-        description: Id of organisation to return
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
       - name: departmentId
         in: path
         required: true
@@ -610,6 +450,101 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Schedule'
+  /department/{departmentId}/schedule/{scheduleId}/{weekId}:
+    get:
+      tags:
+      - schedule
+      summary: Returns a week based on it's id.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "weekId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      operationId: getScheduleById
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+    put:
+      description: "update a week schedule"
+      tags:
+      - schedule
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Week'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Schedule'
+    post:
+      description: "create a week schedule"
+      tags:
+      - schedule
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: departmentId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      - name: "scheduleId"
+        in: path
+        description: Id of organisation to return
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/New_Week'
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Week'
 components:
   schemas:
     Id:
@@ -631,8 +566,15 @@ components:
           $ref: '#/components/schemas/Id'
         name:
           type: string
-        manager:
-          $ref: '#/components/schemas/Employee'
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+    New_Department:
+      type: object
+      properties:
+        name:
+          type: string
     Employee:
       type: object
       properties:
@@ -648,13 +590,106 @@ components:
           type: string
           format: email
         hours:
-          type: object
-          properties: {}
+          type: integer
         isManager:
           type: boolean
           default: false
+    New_Employee:
+      type: object
+      properties:
+        displayName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        isManager:
+          type: boolean
+          default: false
+    Location:
+      type: object
+      properties:
+        department_id:
+          $ref: '#/components/schemas/Id'
+        location_id:
+          $ref: '#/components/schemas/Id'
+        name:
+         type: string
+    New_Location:
+      type: object
+      properties:
+        department_id:
+          $ref: '#/components/schemas/Id'
+        name:
+         type: string
+    Schedule_entry:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        strart:
+          type: string
+        end:
+         type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    New_Schedule_Entry:
+      type: object
+      properties:
+        strart:
+          type: string
+        end:
+         type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    Week:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        meetings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule_entry'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule_entry'
+    New_Week:
+      type: object
+      properties:
+        meetings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule_entry'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule_entry'
     Schedule:
       type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        user:
+          $ref: '#/components/schemas/Employee'
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Week'
+    New_Schedule:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/Employee'
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Week'
+        
   securitySchemes:
     bearerAuth:
       type: http
