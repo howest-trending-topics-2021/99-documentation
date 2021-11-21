@@ -36,6 +36,8 @@ For the server that will be processing the data we use an api for the clients to
 This is not the only part of the server, we also have an AI part that is going to be created with python and an eventstore. these will also be accessable by api calls but only for the other two servers, to see the diagram on how the servers will be communicating with eachother we made some diagrams [this](https://github.com/howest-trending-topics-2021/99-documentation/blob/main/Diagrams/Container%20Diagram.vsdx) diagram will show you how the front end and back end parts are in connection.
 
 #### Deployables
+
+---
 - Front-end PWA: https://kind-mud-02e3e2c03.azurestaticapps.net/
 - Front-end Desktop App: https://studenthowest-my.sharepoint.com/:u:/g/personal/kwinten_tas_student_howest_be/Ed2ai3dnFtdBrtyH5yh0GcQBZoKwRNSjCZd012c5ClO0Wg?e=h2UzCW
 - Backend server: 
