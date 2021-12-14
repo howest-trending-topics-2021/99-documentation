@@ -10,6 +10,8 @@ tags:
 - name: departments
 - name: users
 - name: locations
+- name: logs
+- name: events
 
 paths:
   /departments:
@@ -258,6 +260,129 @@ paths:
           description: Deleted
         '404':
           description: Not Found
+  /logs:
+    post:
+      tags:
+        - logs
+      requestBody:
+        $ref: '#/components/requestBodies/logs'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/log'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - logs
+      parameters:
+        - in: query
+          required: false
+          name: userid
+          schema:
+            type: integer
+        - in: query
+          required: false
+          name: before
+          schema:
+            type: string
+        - in: query
+          required: false
+          name: after
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/log'
+  /events:
+    post:
+      tags:
+        - events
+      requestBody:
+        $ref: '#/components/requestBodies/events'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - events
+      parameters:
+        - in: query
+          required: false
+          name: userid
+          schema:
+            type: integer
+        - in: query
+          required: false
+          name: before
+          schema:
+            type: string
+        - in: query
+          required: false
+          name: after
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/event'
+  /events/{event}:
+    put:
+      tags:
+        - events
+      parameters:
+        - in: path
+          required: true
+          name: event
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/events'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event'
+        '400':
+          description: Bad request
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - events
+      parameters:
+        - in: path
+          required: true
+          name: event
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Not Found
 components:
   requestBodies:
     departments:
@@ -302,6 +427,39 @@ components:
             properties:
              name:
                 type: string
+    logs:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ['name']
+            properties:
+              datetime:
+                type: string
+              type:
+                type: string
+                enum: ['start', 'stop']
+              locationId:
+                type: integer
+              userId:
+                type: integer
+    events:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ['start', 'end', 'userId', 'locationId']
+            properties:
+              start:
+                type: string
+              end:
+                type: string
+              locationId:
+                type: integer
+              userId:
+                type: integer
   schemas:
     department:
       type: object
@@ -349,8 +507,30 @@ components:
           type: integer
         name:
           type: string
-            
-      
-
-
-  
+    log:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: ['start', 'stop']
+        datetime:
+          type: string
+        location:
+          $ref: '#/components/schemas/location'
+        user:
+          $ref: '#/components/schemas/user'
+    event:
+      type: object
+      properties:
+        id:
+          type: integer
+        start:  
+          type: string
+        end:
+          type: string
+        location:
+          $ref: '#/components/schemas/location'
+        user:
+          $ref: '#/components/schemas/user'
