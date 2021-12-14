@@ -1,0 +1,356 @@
+openapi: 3.0.1
+info:
+  title: Clocker
+  description: This is the API spec for the Clocker scheduling app.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+tags:
+- name: departments
+- name: users
+- name: locations
+
+paths:
+  /departments:
+    post:
+      tags:
+        - departments
+      requestBody:
+        $ref: '#/components/requestBodies/departments'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/department'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - departments
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/department'
+  /departments/{department}:
+    get:
+      tags:
+        - departments
+      parameters:
+        - in: path
+          required: true
+          name: department
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/department'
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - departments
+      parameters:
+        - in: path
+          required: true
+          name: department
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/departments'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/department'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - departments
+      parameters:
+        - in: path
+          required: true
+          name: department
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Not Found
+  /users:
+    post:
+      tags:
+        - users
+      requestBody:
+        $ref: '#/components/requestBodies/users'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userDetailed'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - users
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/userDetailed'
+  /users/{user}:
+    get:
+      tags:
+        - users
+      parameters:
+        - in: path
+          required: true
+          name: user
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userDetailed'
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - users
+      parameters:
+        - in: path
+          required: true
+          name: user
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/users'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userDetailed'
+        '400':
+          description: Bad request
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - users
+      parameters:
+        - in: path
+          required: true
+          name: user
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Not Found
+  /locations:
+    post:
+      tags:
+        - locations
+      requestBody:
+        $ref: '#/components/requestBodies/locations'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location'
+        '400':
+          description: Bad request
+    get:
+      tags:
+        - locations
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/location'
+  /locations/{location}:
+    get:
+      tags:
+        - locations
+      parameters:
+        - in: path
+          required: true
+          name: location
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location'
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - locations
+      parameters:
+        - in: path
+          required: true
+          name: location
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/locations'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location'
+        '400':
+          description: Bad request
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - locations
+      parameters:
+        - in: path
+          required: true
+          name: location
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          description: Not Found
+components:
+  requestBodies:
+    departments:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ['name']
+            properties:
+              name:
+                type: string
+              managerId:
+                type: integer
+    users:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ['displayname', 'firstname', 'lastname', 'email', 'hours']
+            properties:
+              displayname:
+                type: string
+              firstname:
+                type: string
+              lastname:
+                type: string
+              email:
+                type: string
+              hours:
+                type: number
+              departmentId:
+                type: integer
+    locations:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: ['name']
+            properties:
+             name:
+                type: string
+  schemas:
+    department:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        manager:
+          $ref: '#/components/schemas/user'
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        displayName:
+          type: string
+    userDetailed:
+      type: object
+      properties:
+        id:
+          type: integer
+        displayname:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        hours:
+          type: number
+        department:
+          $ref: '#/components/schemas/department'
+        isManager:
+          type: boolean
+    location:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+            
+      
+
+
+  
