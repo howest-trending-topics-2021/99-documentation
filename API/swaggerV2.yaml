@@ -439,6 +439,7 @@ components:
             properties:
               datetime:
                 type: string
+                example: yyyy-MM-ddTHH:mm:ss
               type:
                 type: string
                 enum: ['start', 'stop']
@@ -456,8 +457,10 @@ components:
             properties:
               start:
                 type: string
+                example: yyyy-MM-ddTHH:mm:ss
               end:
                 type: string
+                example: yyyy-MM-ddTHH:mm:ss
               locationId:
                 type: integer
               userId:
@@ -519,6 +522,7 @@ components:
           enum: ['start', 'stop']
         datetime:
           type: string
+          example: yyyy-MM-ddTHH:mm:ss
         location:
           $ref: '#/components/schemas/location'
         user:
@@ -530,8 +534,10 @@ components:
           type: integer
         start:  
           type: string
+          example: yyyy-MM-ddTHH:mm:ss
         end:
           type: string
+          example: yyyy-MM-ddTHH:mm:ss
         location:
           $ref: '#/components/schemas/location'
         user:
