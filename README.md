@@ -38,8 +38,6 @@ A demo application has been set up at: https://kind-mud-02e3e2c03.azurestaticapp
 
 To deploy a new version of the application, all information can be found [here](https://github.com/howest-trending-topics-2021/01-frontend-web)
 
-
-
 #### Desktop App
 
 ---
@@ -68,14 +66,13 @@ One specific part of the business logic is the prediction if an employee is like
 
 To deploy another AI server, go to [this repo](https://github.com/howest-trending-topics-2021/05-AI) for all information
 
+The AI server demo can be consumed at: http://omv-server-gabriels.duckdns.org:5000/, to test your connection simply query the [echo](http://omv-server-gabriels.duckdns.org:5000/echo) endpoint
 #### Database
 
 ---
 
-All data has to be preserved in a database. For this project we made use of an Datahike eventstore.
-
-A demo database has been deployed to support the demo server, but this one is not publicly available.
-
-To deploy your own database, read the instructions [here](https://github.com/howest-trending-topics-2021/03-database)
+All data has to be preserved in a database. For this project were going to use a Datahike eventstore. This however prooved to difficult for the scope.
+Instead we now use a postgress DB who's logic is contained on the backend server.
+For more info, read the instructions [here](https://github.com/howest-trending-topics-2021/03-database)
 
 
