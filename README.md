@@ -71,7 +71,7 @@ The AI server demo can be consumed at: http://omv-server-gabriels.duckdns.org:50
 
 ---
 
-All data has to be preserved in a database. For this project were going to use a Datahike eventstore. This however prooved to difficult for the scope.
+All data has to be preserved in a database. For this project were going to use a Datahike eventstore. This however proved too difficult for the scope.
 Instead we now use a postgress DB who's logic is contained on the backend server.
 For more info, read the instructions [here](https://github.com/howest-trending-topics-2021/03-database)
 
