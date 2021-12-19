@@ -44,7 +44,7 @@ To deploy a new version of the application, all information can be found [here](
 
 The desktop application is an identical interface as the PWA, but is intended to run on a native Windows environment such as a laptop or desktop.
 
-A demo application has been build and can be downloaded from [here](https://studenthowest-my.sharepoint.com/:u:/g/personal/kwinten_tas_student_howest_be/Ed2ai3dnFtdBrtyH5yh0GcQBZoKwRNSjCZd012c5ClO0Wg?e=h2UzCW)
+A demo application has been build and can be downloaded from [here](jornesuwier.be/Clocker-Setup.exe)
 
 To build a new version, all information can be found [here](https://github.com/howest-trending-topics-2021/01-frontend-web)
 
